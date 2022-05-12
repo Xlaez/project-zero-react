@@ -4,13 +4,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faO, faSignIn, faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom'
 import { GiHamburgerMenu } from 'react-icons/gi'
-import { BsDashCircleFill, BsHouseFill, BsTelephoneFill, BsFacebook, BsTwitter, BsGithub, BsYoutube } from 'react-icons/bs';
+import { BsDashCircleFill, BsHouseFill, BsTelephoneFill, BsFacebook, BsTwitter, BsGithub, BsYoutube, BsPeopleFill } from 'react-icons/bs';
 import '../styles/HomeBase.css';
 import { api, apiHost } from '../utils/Api';
+import Contact from './Contact';
+import About from './About';
 function HomeBase() {
+    const [body, changeBody] = useState(null);
+    const [id, setId] = useState(undefined);
     const navigate = useNavigate()
     const handleSignout = () => {
-        localStorage.removeItem('x-eoeo-dddd-dddd-eoeo');
+        localStorage.removeItem("x-eoeo-dddd-dddd-eoeo");
+        navigate('/login')
+    }
+    const handleSinglePage = async (ids) => {
+        setId(ids)
+    }
+    const handleSinglePageNav = async () => {
+        localStorage.setItem('x-eoeo-dddd-dddd-eoeo-axax', id);
+        navigate('/single')
     }
     let [nav, setNav] = useState(false);
     const [articles, setArticles] = useState([]);
@@ -48,18 +60,29 @@ function HomeBase() {
                         </div>
                         <div className="nav-links">
                             <div className="link-n">
-                                <div className="link" onClick={() => navigate('/')}>
+                                <div className="link" onClick={() => changeBody(null)}>
                                     <BsHouseFill />
                                     BlogHome
                                 </div>
-                                <div className="link" onClick={() => navigate('/dash')}>
-                                    <BsDashCircleFill />
-                                    Dashboard
-                                </div>
-                                <div className="link" onClick={() => navigate('/contact')}>
+                                {
+                                    accessToken ? (
+                                        <div className="link" onClick={() => navigate('/dash')}>
+                                            <BsDashCircleFill />
+                                            Dashboard
+                                        </div>
+                                    ) : (
+                                        <div className="link" onClick={() => changeBody('contact')}>
+                                            <BsPeopleFill />
+                                            About Us
+                                        </div>
+
+                                    )
+                                }
+                                <div className="link" onClick={() => changeBody('about')}>
                                     <BsTelephoneFill />
                                     Contact Us
                                 </div>
+
                             </div>
                             {
                                 accessToken && (
@@ -70,8 +93,9 @@ function HomeBase() {
                                                 Admin SignIn
                                             </Link>
                                         </div>
-                                        <div className="link">
-                                            <FontAwesomeIcon icon={faSignOut} color="white" onClick={() => handleSignout()} />
+                                        <div className="link"
+                                            onClick={() => handleSignout()}>
+                                            <FontAwesomeIcon icon={faSignOut} color="white" />
                                             Admin Signout
                                         </div>
                                     </div>
@@ -87,9 +111,9 @@ function HomeBase() {
                         <strong>Categories we write on</strong>
                         <small>click to navigate the sections</small>
                         <div className="dropdown-result">
-                            <div>frontend web development</div>
-                            <div>backend web development</div>
-                            <div>python and node micro services</div>
+                            <div>web development</div>
+                            {/* <div>mobile development</div> */}
+                            <div>python programming</div>
                             <div>ui/ux design pattern</div>
                             <div>linux and bash scripting</div>
                         </div>
@@ -97,87 +121,109 @@ function HomeBase() {
                 </div>
             }
 
-            <section className="ow-section">
-                <div className="ow-nav-essential">
-                    <div className="dropdown">
-                        <ul>
-                            <li>
-                                <GiHamburgerMenu className="menu-bar" onClick={() => handleChangeNav()} />
+            {
+                body === null && (
+                    <section className="ow-section">
+                        <div className="ow-nav-essential">
+                            <div className="dropdown">
+                                <ul>
+                                    <li>
+                                        <GiHamburgerMenu className="menu-bar" onClick={() => handleChangeNav()} />
 
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="socials">
-                        <ul>
-                            <li>
-                                <Link to="https://google.com">
-                                    <BsFacebook />
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="https://google.com">
-                                    <BsTwitter className="i-twitter" />
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="https://google.com">
-                                    <BsYoutube className="i-youtube" />
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="https://google.com">
-                                    <BsGithub />
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div className="socials">
+                                <ul>
+                                    <li>
+                                        <Link to="https://google.com">
+                                            <BsFacebook />
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="https://google.com">
+                                            <BsTwitter className="i-twitter" />
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="https://google.com">
+                                            <BsYoutube className="i-youtube" />
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="https://google.com">
+                                            <BsGithub />
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </div>
 
-                </div>
-                {
-                    articles.length !== 0 && (
-                        <div className="ow-article-show">
-                            {
-                                articles.map((article) => {
-                                    return (
-                                        <div className='ow-article' key="article._id">
-                                            <Link to="/" className="effect-lily">
-                                                <div>
-                                                    <img src={`${apiHost}/${article.image}`} alt="" />
-                                                </div>
-                                                <strong>{article.title}</strong>
-                                                <p>
-                                                    {article.descr}
-                                                </p>
-                                                <legend>
-                                                    <span>In {article.category}</span>
-                                                    <span>{new Date(article.createdAt).toDateString()}</span>
-                                                </legend>
-                                                <legend className="legend2">
-                                                    <span>{article.views} views</span>
-                                                    <span>by Davidson Jacobs</span>
-                                                </legend>
-                                            </Link>
-                                        </div>
-                                    )
-                                })
-                            }
                         </div>
-                    )
-                }
-                <div className="pre-footer">
-                    <div className="first-btn">
-                        <button className="exp">Previous</button>
-                        <button>Next</button>
-                    </div>
-                    <div className="second-btn">
-                        <button className="exp">pages</button>
-                        <button>1</button>
-                        <button>2</button>
-                        <button>3</button>
-                        <button>4</button>
-                    </div>
-                </div>
-            </section>
+                        {
+                            articles.length !== 0 && (
+                                <div className="ow-article-show">
+                                    {
+                                        articles.map((article) => {
+                                            return (
+                                                <div className='ow-article' key="article._id">
+                                                    <Link to="/" className="effect-lily">
+                                                        <div>
+                                                            <img src={`${apiHost}/${article.image}`} alt="" onClick={() => handleSinglePage(article._id)} onDoubleClick={() => handleSinglePageNav()} />
+                                                        </div>
+                                                        <small>double click on the image to view </small>
+                                                        <strong>{article.title}</strong>
+                                                        <p>
+                                                            {article.descr}
+                                                        </p>
+                                                        <legend>
+                                                            <span>In {article.category}</span>
+
+                                                            <span>{new Date(article.createdAt).toDateString()}</span>
+                                                        </legend>
+                                                        <legend className="legend2">
+                                                            <span>{article.views} views</span>
+                                                            <span>by {article.author}</span>
+                                                        </legend>
+                                                    </Link>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            )
+                        }
+                        <div className="pre-footer">
+                            <div className="first-btn">
+                                <button className="exp">Previous</button>
+                                <button>Next</button>
+                            </div>
+                            <div className="second-btn">
+                                <button className="exp">pages</button>
+                                <button>1</button>
+                                <button>2</button>
+                                <button>3</button>
+                                <button>4</button>
+                            </div>
+                        </div>
+                        <div className="Footer">
+                            <div>
+                                <span>All rights reserved, OwaBlog &copy; copyright 2022</span>
+                            </div>
+                        </div>
+                    </section>
+                )
+            }
+            {
+                body === 'contact' && (
+                    <Contact handleChangeNav={handleChangeNav} />
+                )
+            }
+            {
+                body === "about" && (
+                    <About handleChangeNav={handleChangeNav} />
+                )
+            }
+
         </Wrapper>
     )
 };
@@ -374,6 +420,7 @@ transition:all 1s ease-out;
     width:100%;
     strong{
         padding-bottom:1rem;
+        text-transform:capitalize;
         font-size:1.4rem;
         padding-left:2rem;
     }
@@ -430,9 +477,18 @@ transition:all 1s ease-out;
             text-decoration:none;
             color:#999;
             opacity:0.9;
+              overflow-wrap: break-word;
+
         }
         img{
             padding-bottom:2rem;
+        }
+        small{
+            /* padding-bottom:2rem; */
+            color:rgb(4, 10,24);
+            font-size:12px;
+            display:block;
+            font-size:700;
         }
         legend{
             display:flex;
@@ -502,6 +558,13 @@ transition:all 1s ease-out;
         }
     }
 }
+}
+.Footer{
+    padding:2rem;
+    background:rgb(4, 10,24);
+    text-align:center;
+    color:#fff;
+    border-top:1px solid #00000076;
 }
 `
 

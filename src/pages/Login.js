@@ -29,7 +29,7 @@ function Login() {
             var res = await req.json();
             if (req.status === 200) {
                 localStorage.setItem('x-eoeo-dddd-dddd-eoeo', res.data.token);
-                localStorage.setItem('x-eoeo-dddd-dddd-eoeo-eeee', res.data.userId);
+                localStorage.setItem('x-eoeo-dddd-dddd-eoeo-eeee', res.data._id);
                 navigate('/');
             } else {
                 console.log('something went wrong!', res.msg);

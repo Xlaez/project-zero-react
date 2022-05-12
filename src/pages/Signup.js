@@ -15,8 +15,10 @@ function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('name', document.getElementById('name').value)
-        formData.append('email', document.getElementById('email').value)
+        formData.append('name', document.getElementById('name').value);
+        formData.append('email', document.getElementById('email').value);
+        formData.append('linkedin', document.getElementById('linkedin').value);
+        formData.append('github', document.getElementById('github').value);
         const password = document.getElementById('password').value;
         formData.append('password', password)
         if (password < 7) {
@@ -30,7 +32,8 @@ function Signup() {
             var res = await req.json();
             if (req.status === 201) {
                 localStorage.setItem('x-eoeo-dddd-dddd-eoeo', res.data.token);
-                localStorage.setItem('x-eoeo-dddd-dddd-eoeo-eeee', res.data.userId);
+                localStorage.setItem('x-eoeo-dddd-dddd-eoeo-eeee', res.data._id);
+
 
                 navigate('/');
             } else {
@@ -53,6 +56,8 @@ function Signup() {
                         <div className="el"><input type="text" id="name" placeholder="Your surname and firstname please" /></div>
                         <div className="el"><input type="email" id="email" placeholder="Your valid emial address please" /></div>
                         <div className="el"><input type="password" id="password" placeholder="Your password, 7 characters or more" /></div>
+                        <div className="el"><input type="text" id="linkedin" placeholder="Your linkedin profile link" /></div>
+                        <div className="el"><input type="text" id="github" placeholder="Your github profile link" /></div>
                     </div>
                 </div>
                 <div className="btn">
