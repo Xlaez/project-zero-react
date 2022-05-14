@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { apiHost } from '../../utils/Api';
 
 function CategoryBody({ articles }) {
     const navigate = useNavigate();
@@ -22,7 +21,7 @@ function CategoryBody({ articles }) {
                             <div className='ow-article' key="article._id">
                                 <Link to="#" className="effect-lily">
                                     <div>
-                                        <img src={`${apiHost}/${article.image}`} alt="" onClick={() => handleSinglePage(article._id)} onDoubleClick={() => handleSinglePageNav()} />
+                                        <img src={article.image} alt="" onClick={() => handleSinglePage(article._id)} onDoubleClick={() => handleSinglePageNav()} />
                                     </div>
                                     <small>double click on the image to view </small>
                                     <strong>{article.title}</strong>

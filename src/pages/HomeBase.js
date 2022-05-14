@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { BsDashCircleFill, BsHouseFill, BsTelephoneFill, BsFacebook, BsTwitter, BsGithub, BsYoutube, BsPeopleFill, BsMenuButtonFill } from 'react-icons/bs';
 import '../styles/HomeBase.css';
-import { api, apiHost } from '../utils/Api';
+import { api } from '../utils/Api';
 import Contact from './Contact';
 import About from './About';
 function HomeBase() {
@@ -230,7 +230,7 @@ function HomeBase() {
                                                 <div className='ow-article' key="article._id">
                                                     <Link to="/" className="effect-lily">
                                                         <div>
-                                                            <img src={`${apiHost}/${article.image}`} alt="" onClick={() => handleSinglePage(article._id)} onDoubleClick={() => handleSinglePageNav()} />
+                                                            <img src={article.image} alt="" onClick={() => handleSinglePage(article._id)} onDoubleClick={() => handleSinglePageNav()} />
                                                         </div>
                                                         <small>double click on the image to view </small>
                                                         <strong>{article.title}</strong>

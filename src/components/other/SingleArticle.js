@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { BsArrowLeft } from 'react-icons/bs';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { api, apiHost } from '../../utils/Api';
+import { api } from '../../utils/Api';
 import ArticleNav from './ArticleNav';
 
 export default function SingleArticle() {
@@ -69,7 +69,7 @@ export default function SingleArticle() {
                             <small>Published on: {new Date(article.updatedAt).toDateString()}</small>
                             {/* <small>Views: {article.views}</small> */}
                             <div>
-                                <img src={`${apiHost}/${article.image}`} alt="" />
+                                <img src={article.image} alt="" />
                             </div>
                             <p>{article.content}</p>
                             <span onClick={() => navigate('/')}>

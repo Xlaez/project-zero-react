@@ -2,7 +2,7 @@ import React from 'react'
 import { BsArrowLeftCircleFill, BsPen, BsPersonCircle, BsPersonFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { apiHost } from '../../utils/Api';
+// import { apiHost } from '../../utils/Api';
 //eslint-ignore-next-line
 function Sidebar({ user, setTabState, tabState }) {
     const navigate = useNavigate();
@@ -11,7 +11,7 @@ function Sidebar({ user, setTabState, tabState }) {
             <div className="profile">
                 {
                     user.isProfile ? (
-                        <img src={`${apiHost}/${user.profile}`} alt="" />
+                        <img src={user.profile} alt="" />
                     ) : (
                         <BsPersonCircle />
                     )
@@ -86,7 +86,7 @@ flex-direction:column;
         }
     }
 }
-@media(max-width:1200px){
+@media(max-width:900px){
     height:30vh;
     max-height:40vh;
     .profile{

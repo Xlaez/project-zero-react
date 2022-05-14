@@ -32,7 +32,7 @@ function Signup() {
             var res = await req.json();
             if (req.status === 201) {
                 localStorage.setItem('x-eoeo-dddd-dddd-eoeo', res.data.token);
-                localStorage.setItem('x-eoeo-dddd-dddd-eoeo-eeee', res.data._id);
+                localStorage.setItem('x-eoeo-dddd-dddd-eoeo-eeee', res.data.userId);
 
 
                 navigate('/');

@@ -20,7 +20,7 @@ const Wrapper = styled.div`
         font-size:1rem;
         padding-left:1rem;
     }
-    @media(max-width:1200px){
+    @media(max-width:900px){
         display:none;
     }
 `
