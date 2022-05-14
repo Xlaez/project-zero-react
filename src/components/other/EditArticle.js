@@ -108,7 +108,7 @@ function EditArticle() {
 
 const Wrapper = styled.div`
 .form{
-        display:flex;
+    display:flex;
         flex-direction:column;
         gap:2rem;
         .btn{
@@ -130,7 +130,7 @@ const Wrapper = styled.div`
         }
     }
     .form-container{
-        width:30vw;
+        /* width:30vw; */
         border:3px solid #ccc;
         background:rgb(4, 10,24);
         display:flex;
@@ -221,6 +221,16 @@ const Wrapper = styled.div`
             }
         }
         }
+    }
+    @media(max-width:1400px){
+        max-width:100vw;
+        overflow-x:hidden;
+        .form{
+            max-width:99%;
+        }
+    }
+    @media(max-width:1000px){
+        display:none;
     }
 `
 

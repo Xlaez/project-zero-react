@@ -51,6 +51,10 @@ width:100vw;
 overflow-x:hidden;
 overflow-y:hidden;
 grid-template-columns:20% 80%;
+@media(max-width:1200px){
+    display:flex;
+    flex-direction:column;
+}
 `
 
 export default Dashboard

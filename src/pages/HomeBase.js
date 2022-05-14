@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faO, faSignIn, faSignOut } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom'
 import { GiHamburgerMenu } from 'react-icons/gi'
-import { BsDashCircleFill, BsHouseFill, BsTelephoneFill, BsFacebook, BsTwitter, BsGithub, BsYoutube, BsPeopleFill } from 'react-icons/bs';
+import { BsDashCircleFill, BsHouseFill, BsTelephoneFill, BsFacebook, BsTwitter, BsGithub, BsYoutube, BsPeopleFill, BsMenuButtonFill } from 'react-icons/bs';
 import '../styles/HomeBase.css';
 import { api, apiHost } from '../utils/Api';
 import Contact from './Contact';
@@ -25,10 +25,15 @@ function HomeBase() {
         navigate('/single')
     }
     let [nav, setNav] = useState(false);
+    let [nav2, setNav2] = useState(false);
     const [articles, setArticles] = useState([]);
 
     const handleChangeNav = () => {
         setNav(!nav);
+    }
+    const handleMoveNav = () => {
+        setNav2(!nav2)
+        setNav(!nav)
     }
     const accessToken = localStorage.getItem('x-eoeo-dddd-dddd-eoeo');
     useEffect(() => {
@@ -107,17 +112,71 @@ function HomeBase() {
             }
             {
                 nav && <div>
-                    <div className="sections-articles">
-                        <strong>Categories we write on</strong>
-                        <small>click to navigate the sections</small>
-                        <div className="dropdown-result">
-                            <div>web development</div>
-                            {/* <div>mobile development</div> */}
-                            <div>python programming</div>
-                            <div>ui/ux design pattern</div>
-                            <div>linux and bash scripting</div>
-                        </div>
-                    </div>
+                    {
+                        nav2 && (
+                            <div className="section-nav">
+                                <div className="nav-links">
+                                    <div className="link-n">
+                                        <div className="link" onClick={() => changeBody(null)}>
+                                            <BsHouseFill />
+                                            BlogHome
+                                        </div>
+                                        {
+                                            accessToken ? (
+                                                <div className="link" onClick={() => navigate('/dash')}>
+                                                    <BsDashCircleFill />
+                                                    Dashboard
+                                                </div>
+                                            ) : (
+                                                <div className="link" onClick={() => changeBody('contact')}>
+                                                    <BsPeopleFill />
+                                                    About Us
+                                                </div>
+
+                                            )
+                                        }
+                                        <div className="link" onClick={() => changeBody('about')}>
+                                            <BsTelephoneFill />
+                                            Contact Us
+                                        </div>
+
+                                    </div>
+                                    {
+                                        accessToken && (
+                                            <div className="link-sep">
+                                                <div className="link">
+                                                    <FontAwesomeIcon icon={faSignIn} color="white" />
+                                                    <Link to='/login'>
+                                                        Admin SignIn
+                                                    </Link>
+                                                </div>
+                                                <div className="link"
+                                                    onClick={() => handleSignout()}>
+                                                    <FontAwesomeIcon icon={faSignOut} color="white" />
+                                                    Admin Signout
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                            </div>
+                        )
+                    }
+                    {
+                        !nav2 && (
+                            <div className="sections-articles">
+                                <strong>Categories we write on</strong>
+                                <small>click to navigate the sections</small>
+                                <div className="dropdown-result">
+                                    <div onClick={() => navigate('/category/webdev')}>web development</div>
+                                    {/* <div>mobile development</div> */}
+                                    <div onClick={() => navigate('/category/design')}>web design</div>
+                                    <div onClick={() => navigate('/category/python')}>python programming</div>
+                                    <div onClick={() => navigate('/category/linux')}>linux and bash scripting</div>
+                                </div>
+                            </div>
+                        )
+                    }
                 </div>
             }
 
@@ -130,6 +189,9 @@ function HomeBase() {
                                     <li>
                                         <GiHamburgerMenu className="menu-bar" onClick={() => handleChangeNav()} />
 
+                                    </li>
+                                    <li>
+                                        <BsMenuButtonFill className="menu-bar-mini" onClick={() => handleMoveNav()} />
                                     </li>
                                 </ul>
                             </div>
@@ -303,7 +365,9 @@ transition:all 1s ease-out;
 
         }
     }
-     .nav-links{
+     
+}
+.nav-links{
         display:flex;
         flex-direction:column;
         align-items:center;
@@ -349,7 +413,6 @@ transition:all 1s ease-out;
             padding-top:3rem;
         }      
     }
-}
 .ow-section{
     background:#fff;
     display:flex;
@@ -390,8 +453,13 @@ transition:all 1s ease-out;
             }
         }
         .dropdown{
-
-            .menu-bar{
+            ul{
+                display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:2rem;
+            }
+            .menu-bar, .menu-bar-mini{
 
                 background:#fff;
                 display:inline-block;
@@ -404,7 +472,7 @@ transition:all 1s ease-out;
             list-style:none;
 
             }
-            .menu-bar{
+            .menu-bar, .menu-bar-mini{
                 color:#131324;
                 font-size:1.3rem;
             }
@@ -565,6 +633,99 @@ transition:all 1s ease-out;
     text-align:center;
     color:#fff;
     border-top:1px solid #00000076;
+}
+@media(max-width:1000px){
+    grid-template-columns:99%;
+    .ow-nav{
+        display:none;
+    }
+    .sections-articles{
+    transition:all 1s ease-out;
+    strong{
+        padding-top:2rem;
+    }
+    }
+}
+@media(max-width:440px){
+    width:100vw;
+    .nav-links{
+        gap:.1rem;
+        .link{
+            height:20px;
+            gap:1rem;
+            font-size:1rem;
+            svg{
+                font-size:1rem;
+            }
+        }  
+        .link-n{
+            padding:.5rem 0;
+            .link{
+                padding:.5rem 0; 
+            }
+        }
+        .link-sep{
+            padding-top:1rem;
+            .link{
+                padding:.5rem 0;
+            }
+        }      
+    }
+    .ow-article-show{
+    padding: 5rem 3rem;
+    display:grid;
+    grid-template-columns:repeat(1, 1fr);
+    gap:2rem;
+    .ow-article{
+        border-bottom:3px solid #131313;
+        padding-bottom:2rem;
+        margin-bottom:1rem;
+        
+    }
+}
+}
+  .pre-footer{
+    margin-top:1rem;
+    padding-bottom:1.5rem;
+    padding-left:.1rem;
+    padding-right:.1rem;
+    align-items:center;
+    justify-content:space-between;
+    flex-direction:column;
+    .first-btn{
+        gap:1rem;
+        button{
+            padding:7px 15px;
+            border-radius:3px;
+        }
+        padding-bottom:1rem;
+    }
+    .second-btn{
+        gap:1rem;
+        button{
+            border-radius:3px;
+            font-size:1rem;
+            padding:7px 15px;
+        }
+    }
+}
+}  
+}
+@media(max-width:410px){
+    .ow-section{
+    .ow-nav-essential{
+    
+        .socials{
+            padding-right:.1rem;
+            
+        }
+        .dropdown{
+            .menu-bar, .menu-bar-mini{
+                font-size:1rem;
+            }
+        }
+    }
+}
 }
 `
 

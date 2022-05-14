@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { BsArrowLeft, BsFacebook, BsGithub, BsTwitter, BsYoutube } from 'react-icons/bs';
+import { BsArrowLeft } from 'react-icons/bs';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { api, apiHost } from '../../utils/Api';
+import ArticleNav from './ArticleNav';
 
 export default function SingleArticle() {
     const navigate = useNavigate();
@@ -58,48 +59,14 @@ export default function SingleArticle() {
     }, []);
     return (
         <Wrapper>
-            <div className="article-nav">
-                <div className="logo">
-                    <span onClick={() => navigate('/')}>OwaBlog</span>
-                </div>
-                <div className="home-page">
-                    <span onClick={() => navigate('/')}>HomePage</span>
-                    <span>Web development</span>
-                    <span>Ui/UX design</span>
-                    <span>Linux</span>
-                    <span>Python</span>
-                </div>
-                <div className="socials">
-                    <ul>
-                        <li>
-                            <Link to="https://google.com">
-                                <BsFacebook />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="https://google.com">
-                                <BsTwitter className="i-twitter" />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="https://google.com">
-                                <BsYoutube className="i-youtube" />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="https://google.com">
-                                <BsGithub />
-                            </Link>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <ArticleNav />
             {
                 article !== null && (
                     <div className="ow-blog-single">
                         <div className="article">
                             <strong>{article.title}</strong>
                             <small>By {article.author}</small>
+                            <small>Published on: {new Date(article.updatedAt).toDateString()}</small>
                             {/* <small>Views: {article.views}</small> */}
                             <div>
                                 <img src={`${apiHost}/${article.image}`} alt="" />
@@ -125,6 +92,11 @@ export default function SingleArticle() {
                     </div>
                 )
             }
+            <div className="Footer">
+                <div>
+                    <span>All rights reserved, OwaBlog &copy; copyright 2022</span>
+                </div>
+            </div>
         </Wrapper>
     )
 }
@@ -240,6 +212,8 @@ flex-direction:column;
             font-size:1.3rem;
             color:#999;
             padding-bottom:1rem;
+            text-transform:capitalize;
+
         }
         small{
             font-size:15px;
@@ -275,5 +249,42 @@ flex-direction:column;
             text-align:center;
         }
     }
+}
+.Footer{
+    padding:2rem;
+    background:rgb(4, 10,24);
+    text-align:center;
+    color:#fff;
+    border-top:1px solid #00000076;
+}
+@media(max-width:500px){
+    .ow-blog-single{
+    max-width:96vw;
+    .article-split{
+        gap:2rem;
+        div{
+            padding:10px 20px;
+            border-radius:3px;
+        };
+        form{
+            button{
+                padding:10px 20px;
+                border-radius:3px;
+            }
+        }
+    }
+    .article{
+        background:#131324;
+        padding:2rem 1rem;
+        strong{
+            font-size:1.2rem;
+            text-align:center;
+        }
+        small{
+            font-size:14px;
+        }
+    
+    }
+}
 }
 `

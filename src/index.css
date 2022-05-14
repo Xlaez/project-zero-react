@@ -1,9 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif&family=Poppins&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif&family=Poppins&display=swap");
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
-h2,h3{
-  font-family:'Noto Serif', serif
+h2,
+h3 {
+  font-family: "Noto Serif", serif;
+}
+@media (max-width: 1000px) {
+  .article-nav {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  .article-nav .socials {
+    display: none;
+  }
+}
+
+@media (max-width: 500px) {
+  .article-nav {
+    padding-top: 1rem;
+    flex-direction: column;
+    padding-bottom: 1rem;
+  }
+  .article-nav .logo {
+    padding: 1rem;
+  }
+  .article-nav .home-page {
+    flex-direction: column;
+  }
 }

@@ -208,6 +208,35 @@ flex-direction:column;
             }
         }
     }
+    @media(max-width:500px){
+        .Header{
+    padding:3rem 1rem;
+    h2{
+        font-size:1.5rem;
+    }
+    div{
+        width:100%;
+        img{
+            width:100%;
+            padding-bottom:2rem;
+            height:300px;
+        }
+    }
+}
+.Contact{
+    padding:2rem 1rem;
+    .img-glide{
+        display:grid;
+        grid-template-columns:repeat(1, 1fr);
+        gap:1.5rem;
+    }
+    img{
+        width:100%;
+        height:230px;
+        padding-bottom:.5rem;
+    }
+}
+    }
 `
 
 export default Contact

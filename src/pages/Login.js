@@ -134,5 +134,20 @@ const Wrapper = styled.main`
             }
         }
     }
+@media(max-width:1400px){
+     .form-container{
+        width:50vw;
+    }
+}
+@media(max-width:1200px){
+    .form-container{
+        width:60vw;
+    }
+}
+@media(max-width:500px){
+    .form-container{
+        width:80vw;
+    }
+}
 `
 export default Login;

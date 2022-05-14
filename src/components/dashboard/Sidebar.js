@@ -43,6 +43,7 @@ height:100vh;
 max-height:100vh;
 display:flex;
 flex-direction:column;
+
 .profile{
     display:flex;
     flex-direction:column;
@@ -83,6 +84,13 @@ flex-direction:column;
             background:#ffffff37;
 
         }
+    }
+}
+@media(max-width:1200px){
+    height:30vh;
+    max-height:40vh;
+    .profile{
+        padding:1rem;
     }
 }
 `
