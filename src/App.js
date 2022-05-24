@@ -10,6 +10,7 @@ import Linux from './components/category/Linux'
 import Webdev from './components/category/Webdev'
 import Python from './components/category/Python'
 import Design from './components/category/Design'
+import Profile from './components/author/Profile'
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
         <Route path='/category/webdev' element={<Webdev />} />
         <Route path='/category/python' element={<Python />} />
         <Route path='/category/design' element={<Design />} />
+        <Route path='/author/profile' element={<Profile />} />
       </Routes>
     </BrowserRouter>
   )

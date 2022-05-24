@@ -1,3 +1,7 @@
+.effect-lily {
+  list-style: none;
+  cursor: pointer;
+}
 .effect-lily img {
   max-width: none;
   width: -webkit-calc(100% + 50px);

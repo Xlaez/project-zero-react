@@ -34,7 +34,7 @@ function ArticleNav() {
                         </Link>
                     </li>
                     <li>
-                        <Link to="https://google.com">
+                        <Link to="https://github.com/Xlaez">
                             <BsGithub />
                         </Link>
                     </li>

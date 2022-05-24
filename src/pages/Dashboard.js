@@ -21,13 +21,16 @@ function Dashboard() {
                 headers,
             });
             if (req.status === 400) {
-
+                localStorage.removeItem('x-eoeo-dddd-dddd-eoeo')
+                localStorage.removeItem('x-eoeo-dddd-dddd-eoeo-eeee')
                 navigate('/login');
             } else if (req.status === 200) {
                 const res = await req.json();
 
                 setUser(res.data);
             } else {
+                localStorage.removeItem('x-eoeo-dddd-dddd-eoeo')
+                localStorage.removeItem('x-eoeo-dddd-dddd-eoeo-eeee')
                 navigate('/login');
             };
         }

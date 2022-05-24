@@ -9,9 +9,21 @@ import '../styles/HomeBase.css';
 import { api } from '../utils/Api';
 import Contact from './Contact';
 import About from './About';
+import uuid from '../utils/Random';
+import EmptyArticles from '../components/other/EmptyArticles';
+import Footer from '../components/other/Footer';
+
 function HomeBase() {
     const [body, changeBody] = useState(null);
     const [id, setId] = useState(undefined);
+    let [totalItems, setTotalItems] = useState(0);
+    let [nav, setNav] = useState(false);
+    let [nav2, setNav2] = useState(false);
+    let [currentPage, setCurrentPage] = useState(1);
+    let [disablePageNav, setDisablePageNav] = useState(false);
+    const articlesPerPage = 4;
+
+    const [articles, setArticles] = useState([]);
     const navigate = useNavigate()
     const handleSignout = () => {
         localStorage.removeItem("x-eoeo-dddd-dddd-eoeo");
@@ -24,9 +36,7 @@ function HomeBase() {
         localStorage.setItem('x-eoeo-dddd-dddd-eoeo-axax', id);
         navigate('/single')
     }
-    let [nav, setNav] = useState(false);
-    let [nav2, setNav2] = useState(false);
-    const [articles, setArticles] = useState([]);
+
 
     const handleChangeNav = () => {
         setNav(!nav);
@@ -35,21 +45,69 @@ function HomeBase() {
         setNav2(!nav2)
         setNav(!nav)
     }
+    let page = currentPage;
     const accessToken = localStorage.getItem('x-eoeo-dddd-dddd-eoeo');
     useEffect(() => {
         async function getArticles() {
-            const req = await fetch(`${api}/articles`, {
+            const req = await fetch(`${api}/articles?page=${page}`, {
                 method: "GET",
             });
             const res = await req.json();
             if (req.ok) {
                 setArticles(res.data);
+                setTotalItems(res.totalItems);
             } else {
                 console.log('an error occured')
             }
         }
         getArticles();
     }, []);
+    const setCurrentPage1 = async (page) => {
+        setCurrentPage(page);
+        const req = await fetch(`${api}/articles?page=${page}`, {
+            method: "GET",
+        });
+        const res = await req.json();
+        if (req.ok) {
+            setArticles(res.data);
+        } else {
+            console.log('an error occured')
+        }
+    }
+
+    const setCurrentPageNext = async () => {
+        const nextPage = currentPage + 1;
+        const req = await fetch(`${api}/articles?page=${nextPage}`, {
+            method: "GET",
+        });
+        const res = await req.json();
+        if (req.ok) {
+            setArticles(res.data);
+            setCurrentPage(nextPage)
+        } else {
+            console.log('an error occured')
+        }
+    }
+
+    const setPreviousPage = async () => {
+        const nextPage = currentPage - 1;
+        if (currentPage > 1) {
+            const req = await fetch(`${api}/articles?page=${nextPage}`, {
+                method: "GET",
+            });
+            const res = await req.json();
+            if (req.ok) {
+                setArticles(res.data);
+                setCurrentPage(nextPage)
+            } else {
+                // setDisablePageNav
+                console.log('an error occured')
+            }
+        } else {
+            setDisablePageNav(true);
+        }
+    }
+
     return (
         <Wrapper>
             {
@@ -163,7 +221,7 @@ function HomeBase() {
                         )
                     }
                     {
-                        !nav2 && (
+                        nav2 === false && (
                             <div className="sections-articles">
                                 <strong>Categories we write on</strong>
                                 <small>click to navigate the sections</small>
@@ -213,7 +271,7 @@ function HomeBase() {
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link to="https://google.com">
+                                        <Link to="https://github.com/Xlaez">
                                             <BsGithub />
                                         </Link>
                                     </li>
@@ -222,13 +280,13 @@ function HomeBase() {
 
                         </div>
                         {
-                            articles.length !== 0 && (
+                            articles.length !== 0 ? (
                                 <div className="ow-article-show">
                                     {
                                         articles.map((article) => {
                                             return (
-                                                <div className='ow-article' key="article._id">
-                                                    <Link to="/" className="effect-lily">
+                                                <div className='ow-article' key={uuid()}>
+                                                    <li className="effect-lily">
                                                         <div>
                                                             <img src={article.image} alt="" onClick={() => handleSinglePage(article._id)} onDoubleClick={() => handleSinglePageNav()} />
                                                         </div>
@@ -246,32 +304,38 @@ function HomeBase() {
                                                             <span>{article.views} views</span>
                                                             <span>by {article.author}</span>
                                                         </legend>
-                                                    </Link>
+                                                    </li>
                                                 </div>
                                             )
                                         })
                                     }
                                 </div>
+                            ) : (
+                                <EmptyArticles />
                             )
                         }
-                        <div className="pre-footer">
-                            <div className="first-btn">
-                                <button className="exp">Previous</button>
-                                <button>Next</button>
-                            </div>
-                            <div className="second-btn">
-                                <button className="exp">pages</button>
-                                <button>1</button>
-                                <button>2</button>
-                                <button>3</button>
-                                <button>4</button>
-                            </div>
-                        </div>
-                        <div className="Footer">
-                            <div>
-                                <span>All rights reserved, OwaBlog &copy; copyright 2022</span>
-                            </div>
-                        </div>
+
+                        {
+                            totalItems > 0 && (
+                                <div className="pre-footer">
+                                    <div className="first-btn">
+                                        <button className={`exp ${disablePageNav === false ? 'exp-n' : ''}`} onClick={() => setPreviousPage()}>Previous</button>
+                                        <button className={`btn-2 ${articles.length < articlesPerPage ? 'exp-dis' : ''}`} onClick={() => setCurrentPageNext()}>Next</button>
+                                    </div>
+                                    <div className="second-btn">
+                                        <button className="exp">pages</button>
+                                        <button onClick={() => setCurrentPage1(1)}>1</button>
+                                        <button onClick={() => setCurrentPage1(2)}>2</button>
+                                        <button onClick={() => setCurrentPage1(3)}>3</button>
+                                        <button onClick={() => setCurrentPage1(4)}>4</button>
+                                    </div>
+                                    <div className="third-btn">
+                                        <span>Total Items: {totalItems}</span>
+                                    </div>
+                                </div>
+                            )
+                        }
+                        <Footer />
                     </section>
                 )
             }
@@ -282,7 +346,7 @@ function HomeBase() {
             }
             {
                 body === "about" && (
-                    <About handleChangeNav={handleChangeNav} />
+                    <About handleChangeNav={handleChangeNav} changeBody={changeBody} />
                 )
             }
 
@@ -299,7 +363,12 @@ display:grid;
 grid-template-columns:25% 75%;
 background:#000211;
 transition:all 1s ease-out;
-
+.second-btn{
+    padding-right:2rem;
+}
+.third-btn{
+    color:#888;
+}
 .show-nav{
     background:#131324;
     display:flex !important;
@@ -575,6 +644,7 @@ transition:all 1s ease-out;
         }
     }
 }
+
 .pre-footer{
     margin-top:4rem;
     padding-bottom:2rem;
@@ -592,6 +662,9 @@ transition:all 1s ease-out;
             background:transparent;
             color:#888;
             border:none;
+            cursor:not-allowed;
+        }
+        .exp-dis{
             cursor:not-allowed;
         }
         button{
@@ -622,7 +695,9 @@ transition:all 1s ease-out;
             color:#888;
             border:none;
             cursor:not-allowed;
-
+        }
+        .exp-n{
+            cursor:pointer !important;
         }
     }
 }
@@ -634,16 +709,37 @@ transition:all 1s ease-out;
     color:#fff;
     border-top:1px solid #00000076;
 }
+@media(min-width:1001px){
+    .menu-bar-mini{
+        display:none !important;
+    }
+}
 @media(max-width:1000px){
     grid-template-columns:99%;
+    .menu-bar-mini{
+        display:initial !important;
+    }
     .ow-nav{
         display:none;
+    }
+    .second-btn{
+        padding-right:0;
+        padding-bottom:2rem;
     }
     .sections-articles{
     transition:all 1s ease-out;
     strong{
         padding-top:2rem;
     }
+    }
+    .nav-links{
+        display:flex;
+        flex-direction:column;
+        align-items:left !important;
+        justify-content:left !important;
+        padding:1rem 0;
+        max-height:200px;
+        overflow-y:hidden; 
     }
 }
 @media(max-width:440px){
@@ -682,7 +778,7 @@ transition:all 1s ease-out;
         margin-bottom:1rem;
         
     }
-}
+
 }
   .pre-footer{
     margin-top:1rem;
@@ -693,6 +789,7 @@ transition:all 1s ease-out;
     justify-content:space-between;
     flex-direction:column;
     .first-btn{
+        padding-bottom:2rem;
         gap:1rem;
         button{
             padding:7px 15px;
@@ -709,7 +806,7 @@ transition:all 1s ease-out;
         }
     }
 }
-}  
+}}  
 }
 @media(max-width:410px){
     .ow-section{

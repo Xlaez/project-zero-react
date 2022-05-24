@@ -29,15 +29,19 @@ function EditArticle() {
         const formData = new FormData();
         const title = document.getElementById('title').value;
         const descr = document.getElementById('descr').value;
-        const content = document.getElementById('content').value;
+        const content = document.getElementById('content_one').value;
+        const content_two = document.getElementById('content_two').value;
+        const content_three = document.getElementById('content_three').value;
         const category = document.getElementById('category').value;
         const image = document.getElementById('image2').files[0];
-        if (image === null || title === null || content === null) {
+        if (title === null || content === null) {
             console.log("please add required fieds");
         } else {
             formData.append('title', title)
             formData.append('descr', descr);
-            formData.append('content', content);
+            formData.append('content_one', content);
+            formData.append('content_two', content_two);
+            formData.append('content_three', content_three);
             formData.append('image', image);
             formData.append('category', category);
             const req = await fetch(`${api}/articles/${id}`, {
@@ -86,7 +90,17 @@ function EditArticle() {
                                 </div>
                                 <div className="el">
                                     <label htmlFor="content">Article content</label>
-                                    <textarea cols="30" rows="10" id="content" defaultValue={article.content}>
+                                    <textarea cols="30" rows="10" id="content_one" defaultValue={article.content_one}>
+                                    </textarea>
+                                </div>
+                                <div className="el">
+                                    <label htmlFor="content">Article content two</label>
+                                    <textarea cols="30" rows="10" id="content_two" defaultValue={article.content_two}>
+                                    </textarea>
+                                </div>
+                                <div className="el">
+                                    <label htmlFor="content">Article content three</label>
+                                    <textarea cols="30" rows="10" id="content_three" defaultValue={article.content_three}>
                                     </textarea>
                                 </div>
                                 <div className="el">

@@ -2,7 +2,6 @@ import React from 'react'
 import { BsArrowLeftCircleFill, BsPen, BsPersonCircle, BsPersonFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-// import { apiHost } from '../../utils/Api';
 //eslint-ignore-next-line
 function Sidebar({ user, setTabState, tabState }) {
     const navigate = useNavigate();

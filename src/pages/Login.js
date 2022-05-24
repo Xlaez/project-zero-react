@@ -15,11 +15,17 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('email', document.getElementById('email').value)
-        const password = document.getElementById('password').value;
+        let email = document.getElementById('email').value;
+        formData.append('email', email);
+        let password = document.getElementById('password').value;
         formData.append('password', password)
-        if (password < 7) {
+        if (password.length < 7) {
             setIsValid(false);
+            setTimeout(() => {
+                setIsValid(true);
+                password = '';
+                email = '';
+            }, 2000);
         }
         else {
             const req = await fetch(`${api}/auth/login`, {
@@ -32,7 +38,12 @@ function Login() {
                 localStorage.setItem('x-eoeo-dddd-dddd-eoeo-eeee', res.data._id);
                 navigate('/');
             } else {
-                console.log('something went wrong!', res.msg);
+                setIsValid('error')
+                setTimeout(() => {
+                    setIsValid(true);
+                    password = '';
+                    email = '';
+                }, 2000);
             }
 
         }
@@ -42,10 +53,18 @@ function Login() {
             <form className="form" onSubmit={(e) => handleSubmit(e)}>
                 <div className="form-container">
                     {
-                        isVaid ? (
+                        isVaid && (
                             <strong>Login as an author</strong>
-                        ) : (
+                        )
+                    }
+                    {
+                        isVaid === false && (
                             <strong className="error">Password does not meet requirement</strong>
+                        )
+                    }
+                    {
+                        isVaid === "error" && (
+                            <strong className="error">Your login details is incorrect</strong>
                         )
                     }
                     <div className="elements">
@@ -71,7 +90,7 @@ const Wrapper = styled.main`
     align-items:center;
     justify-content:center;
     .error{
-        color:red;
+        color:red !important;
     }
     .form{
         display:flex;

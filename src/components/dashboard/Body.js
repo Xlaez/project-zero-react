@@ -15,7 +15,9 @@ function Body({ tabState, setTabState }) {
         const formData = new FormData();
         const title = document.getElementById('title').value;
         const descr = document.getElementById('descr').value;
-        const content = document.getElementById('content').value;
+        const content = document.getElementById('content_one').value;
+        const contentTwo = document.getElementById('content_two').value;
+        const contentThree = document.getElementById('content_three').value;
         const category = document.getElementById('category').value;
         const image = document.getElementById('image2').files[0];
         if (image === null || title === null || content === null) {
@@ -23,7 +25,9 @@ function Body({ tabState, setTabState }) {
         } else {
             formData.append('title', title)
             formData.append('descr', descr);
-            formData.append('content', content);
+            formData.append('content_one', content);
+            formData.append('content_two', contentTwo);
+            formData.append('content_three', contentThree);
             formData.append('image', image);
             formData.append('category', category);
             const req = await fetch(`${api}/articles`, {
@@ -104,7 +108,17 @@ function Body({ tabState, setTabState }) {
                                 </div>
                                 <div className="el">
                                     <label htmlFor="content">Article content</label>
-                                    <textarea cols="30" rows="10" id="content">
+                                    <textarea cols="30" rows="10" id="content_one">
+                                    </textarea>
+                                </div>
+                                <div className="el">
+                                    <label htmlFor="content">Article content</label>
+                                    <textarea cols="30" rows="10" id="content_two">
+                                    </textarea>
+                                </div>
+                                <div className="el">
+                                    <label htmlFor="content">Article content</label>
+                                    <textarea cols="30" rows="10" id="content_three">
                                     </textarea>
                                 </div>
                                 <div className="el">

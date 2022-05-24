@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import image2 from '../../public/images/about-02.jpg';
 import image3 from '../../public/images/about-03.jpg';
 import image4 from '../../public/images/about-04.jpg';
+import Footer from '../components/other/Footer';
 // import image5 from '../../public/images/about-05.jpg';
 
 
@@ -72,11 +73,7 @@ function Contact({ handleChangeNav }) {
                     </div>
                 </div>
             </div>
-            <div className="Footer">
-                <div>
-                    <span>All rights reserved, OwaBlog &copy; copyright 2022</span>
-                </div>
-            </div>
+            <Footer />
         </Wrapper>
     )
 }

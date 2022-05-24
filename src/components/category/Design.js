@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { api } from '../../utils/Api';
 import ArticleNav from '../other/ArticleNav';
 import CategoryBody from '../other/CategoryBody';
+import EmptyArticles from '../other/EmptyArticles';
 
 function Design() {
 
@@ -28,10 +29,12 @@ function Design() {
         <Wrapper>
             <ArticleNav />
             {
-                articles.length !== 0 && (
+                articles.length !== 0 ? (
                     <div className="article-body-ow">
                         <CategoryBody articles={articles} />
                     </div>
+                ) : (
+                    <EmptyArticles />
                 )
             }
         </Wrapper>

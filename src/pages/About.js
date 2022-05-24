@@ -1,12 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BsGithub, BsTwitter, BsYoutube, BsFacebook } from 'react-icons/bs'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import image from '../../public/images/about-01.jpg'
-function About({ handleChangeNav }) {
-    const sendMsg = (e) => {
+import { api } from '../utils/Api'
+
+function About({ handleChangeNav, changeBody }) {
+    let [invalid, setInvalid] = useState(false);
+    const sendMsg = async (e) => {
         e.preventDefault();
+        const email = document.getElementById('email').value;
+        const passwd = document.getElementById('name').value;
+        const message = document.getElementById('message').value;
+        const formData = new FormData();
+        if (email.length < 5 || passwd.length < 2 || message.length < 5) {
+            setInvalid(true);
+            setTimeout(() => {
+                setInvalid(false);
+            }, 2000);
+        } else {
+            formData.append('email', email)
+            formData.append('name', passwd)
+            formData.append('message', message)
+
+            const req = await fetch(`${api}/contact`, {
+                method: "POST",
+                body: formData,
+            });
+            if (req.ok) {
+                changeBody(null);
+            }
+        };
     }
     return (
         <Wrapper>
@@ -50,11 +75,20 @@ function About({ handleChangeNav }) {
             <div className="Contact">
                 <form className="form" onSubmit={(e) => sendMsg(e)}>
                     <div className="form-container">
-                        <strong>Contact OwaBlog</strong>
+                        {
+                            !invalid && (
+                                <strong>Contact OwaBlog</strong>
+                            )
+                        }
+                        {
+                            invalid && (
+                                <strong className="error">Check your form again</strong>
+                            )
+                        }
                         <div className="elements">
 
-                            <div className="el"><label htmlFor="email">Email address</label><input type="email" id="email" /></div>
                             <div className="el"><label htmlFor="name">Full name</label><input type="text" id="name" /></div>
+                            <div className="el"><label htmlFor="email">Email address</label><input type="email" id="email" /></div>
                             <div className="el"><label htmlFor="message">Message</label><textarea cols="30" rows="10" id="message"></textarea></div>
                         </div>
                     </div>
@@ -65,7 +99,7 @@ function About({ handleChangeNav }) {
             </div>
             <div className="Footer">
                 <div>
-                    <span>All rights reserved, OwaBlog &copy; copyright 2022</span>
+                    <span>OwaBlog 2022 Copyright &copy;</span>
                 </div>
             </div>
         </Wrapper>
@@ -79,6 +113,9 @@ overflow-x:hidden;
 background:#fff;
 display:flex;
 flex-direction:column;
+.error{
+    color:red !important;
+}
 .Header{
     padding:2rem 3rem;
     img{
@@ -221,7 +258,13 @@ flex-direction:column;
                     background:transparent;
                     border:2px solid #ccc;
                     border-radius:.5rem;
+                    padding-top:5px;
+                    padding-left:5px;
                     color:#000;
+                     &:focus{
+                        outline:none;
+                        padding-left:3px;
+                    }
                 }
             }
         }

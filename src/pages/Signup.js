@@ -22,7 +22,10 @@ function Signup() {
         const password = document.getElementById('password').value;
         formData.append('password', password)
         if (password < 7) {
-            setIsValid(false);
+            setIsValid(true);
+            setTimeout(() => {
+                setIsValid(false);
+            }, 2000);
         }
         else {
             const req = await fetch(`${api}/auth`, {
@@ -37,7 +40,11 @@ function Signup() {
 
                 navigate('/');
             } else {
-                console.log('something went wrong!', res.msg);
+                setIsValid("error");
+                setTimeout(() => {
+                    setIsValid(true);
+                }, 2000);
+
             }
 
         }
@@ -47,11 +54,20 @@ function Signup() {
         <Wrapper>
             <form className="form" onSubmit={(e) => handleSubmit(e)}>
                 <div className="form-container">
-                    {isVaid ? (
+                    {isVaid && (
                         <strong>Signup as an author</strong>
-                    ) : (
-                        <strong className="error">Password below limit</strong>
-                    )}
+                    )
+                    }
+                    {
+                        isVaid === false && (
+                            <strong className="error">Password does not meat requirement</strong>
+                        )
+                    }
+                    {
+                        isVaid === "error" && (
+                            <strong className="error">Please check your form and try again</strong>
+                        )
+                    }
                     <div className="elements">
                         <div className="el"><input type="text" id="name" placeholder="Your surname and firstname please" /></div>
                         <div className="el"><input type="email" id="email" placeholder="Your valid emial address please" /></div>
@@ -77,7 +93,7 @@ const Wrapper = styled.main`
     align-items:center;
     justify-content:center;
     .error{
-        color:red;
+        color:red !important;
     }
     .form{
         display:flex;

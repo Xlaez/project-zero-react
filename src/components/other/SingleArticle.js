@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { api } from '../../utils/Api';
 import ArticleNav from './ArticleNav';
+import Footer from './Footer';
 
 export default function SingleArticle() {
     const navigate = useNavigate();
@@ -35,6 +36,9 @@ export default function SingleArticle() {
             navigate('/');
         }
     }
+    // const handleProfileView = () => {
+    //     navigate('/author/profile');
+    // }
     useEffect(() => {
 
         async function getArticle() {
@@ -65,13 +69,18 @@ export default function SingleArticle() {
                     <div className="ow-blog-single">
                         <div className="article">
                             <strong>{article.title}</strong>
-                            <small>By {article.author}</small>
-                            <small>Published on: {new Date(article.updatedAt).toDateString()}</small>
+                            <small className="author" onClick={() => navigate('/author/profile')}>By {article.author}</small>
+                            <small className="date">Published on: {new Date(article.updatedAt).toDateString()}</small>
                             {/* <small>Views: {article.views}</small> */}
                             <div>
-                                <img src={article.image} alt="" />
+                                <div>
+                                    <img src={article.image} alt="" />
+
+                                </div>
+                                <p>{article.content_one}</p>
                             </div>
-                            <p>{article.content}</p>
+                            <p>{article.content_two}</p>
+                            <p>{article.content_three}</p>
                             <span onClick={() => navigate('/')}>
                                 <BsArrowLeft />
                                 back to home
@@ -92,11 +101,8 @@ export default function SingleArticle() {
                     </div>
                 )
             }
-            <div className="Footer">
-                <div>
-                    <span>All rights reserved, OwaBlog &copy; copyright 2022</span>
-                </div>
-            </div>
+            <Footer />
+
         </Wrapper>
     )
 }
@@ -171,12 +177,13 @@ flex-direction:column;
         gap:3rem;
         div{
             a{
-                color:#ccc;
+                color:#fff;
                 text-decoration:none;
             }
-            padding:20px 40px;
+            padding:15px 30px;
+            font-size:16px;
             border-radius:5px;
-            background:#131324;
+            background:green;
             transition:all .5s ease-out;
             cursor:pointer;
                 &:hover{
@@ -188,11 +195,12 @@ flex-direction:column;
             flex-direction:column;
             align-items:center;
             button{
-                padding:20px 40px;
+                padding:15px 30px;
                 border-radius:5px;
-                background:red;
+                background:rgb(134, 7, 7);
                 cursor:pointer;
-                color:#131313;
+                font-size:16px;
+                color:#ccc;
                 border:1px solid transparent;
                 transition:all .5s ease-out;
                 &:hover{
@@ -202,7 +210,7 @@ flex-direction:column;
         }
     }
     .article{
-        background:#131324;
+        background:#fff;
         padding:2rem 3rem;
         display:flex;
         flex-direction:column;
@@ -218,11 +226,10 @@ flex-direction:column;
         small{
             font-size:15px;
             font-weight:700;
-            color:yellow;
-            padding-bottom:2rem;
+            color:#001;
         }
         span{
-            color:yellow;
+            color:#003;
             display:flex;
             align-items:center;
             justify-content:center;
@@ -235,9 +242,27 @@ flex-direction:column;
         }
         div{
             width:100%;
+            display:grid;
+            grid-template-columns:40% 57%;
+            /* place-items:  center; */
+            gap:1rem;
+            p{
+            color:#999;
+            line-height:1.7;
+            overflow-wrap:break-word;
+            }
+            div{
+                height:100%;
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+                justify-content:center;
+            }
             img{
+                height:96%;
+                opacity:0.9;
                 width:100%;
-                max-height:400px;
+                max-height:500px;
                 padding-bottom:1rem;
             }
         }
@@ -246,9 +271,21 @@ flex-direction:column;
             color:#999;
             line-height:1.7;
             overflow-wrap:break-word;
-            text-align:center;
+            text-align:left;
         }
     }
+}
+.author{
+    padding:10px 20px;
+    border-radius:2px;
+    margin-bottom:2rem;
+    background:#131324;
+    color:#fff !important;
+    font-size:14px;
+    cursor:pointer;
+}
+.date{
+    padding-bottom:2rem;
 }
 .Footer{
     padding:2rem;
@@ -274,7 +311,7 @@ flex-direction:column;
         }
     }
     .article{
-        background:#131324;
+        /* background:#131324; */
         padding:2rem 1rem;
         strong{
             font-size:1.2rem;
@@ -283,7 +320,10 @@ flex-direction:column;
         small{
             font-size:14px;
         }
-    
+        div{
+            display:flex;
+            flex-direction:column;
+        }
     }
 }
 }
